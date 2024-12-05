@@ -1,0 +1,570 @@
+<html><head><base href="." /><meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Calculadora de Huella de Nitrógeno - UCV</title>
+<style>
+:root {
+  --ucv-blue: #003a70;
+  --ucv-red: #ee3124;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 10px;
+  background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cstyle%3E.tree %7B fill: %23216e39;%7D .cloud %7B fill: %2374c7ec;%7D%3C/style%3E%3Cg class='trees' opacity='0.3'%3E%3Cpath class='tree' d='M50 300 L80 200 L110 300 Z'/%3E%3Cpath class='tree' d='M200 350 L230 250 L260 350 Z'/%3E%3Cpath class='tree' d='M320 280 L350 180 L380 280 Z'/%3E%3C/g%3E%3Cg class='clouds' opacity='0.2'%3E%3Cpath class='cloud' d='M80 100 Q95 80 110 100 Q125 80 140 100 Q140 120 110 120 Q80 120 80 100'/%3E%3Cpath class='cloud' d='M280 150 Q295 130 310 150 Q325 130 340 150 Q340 170 310 170 Q280 170 280 150'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: backgroundMove 60s linear infinite;
+}
+
+@keyframes backgroundMove {
+  from { background-position: 0 0; }
+  to { background-position: 400px 400px; }
+}
+
+.welcome-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  text-align: center;
+}
+
+.welcome-form {
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto;
+  display: flex;           
+  flex-direction: column;  
+  align-items: center;     
+}
+
+.welcome-input {
+  width: 100%;
+  max-width: 280px;       
+  padding: 12px;
+  margin: 10px auto;      
+  border: 2px solid var(--ucv-blue);
+  border-radius: 4px;
+  font-size: 1rem;
+  text-align: center;     
+}
+
+.welcome-message {
+  color: var(--ucv-blue);
+  font-size: 1.2rem;
+  margin: 20px 0;
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  border: 2px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.logo-container svg {
+  width: 150px;
+  height: 150px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.calculator {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.input-group {
+  margin-bottom: 0.8rem;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.input-group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  background: var(--ucv-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.input-content {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--ucv-blue);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+input[type="number"], input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.3s;
+  font-size: 1rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="number"]:focus, input[type="text"]:focus {
+  border-color: var(--ucv-blue);
+  outline: none;
+}
+
+.welcome-form button {
+  width: auto;            
+  min-width: 200px;       
+  margin: 10px auto;     
+}
+
+button {
+  background-color: var(--ucv-blue);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+button:active {
+  background-color: #002950;
+  transform: scale(0.98);
+}
+
+.result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: rgba(232, 244, 255, 0.9);
+  display: none;
+  border-left: 4px solid var(--ucv-blue);
+  font-size: 0.9rem;
+}
+
+.result h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.result ul {
+  padding-left: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.result li {
+  margin-bottom: 0.3rem;
+}
+
+.social-share {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.share-button {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  transition: opacity 0.3s;
+}
+
+.share-button:hover {
+  opacity: 0.9;
+}
+
+.share-button.facebook {
+  background-color: #1877f2;
+}
+
+.share-button.twitter {
+  background-color: #1da1f2;
+}
+
+.share-button.whatsapp {
+  background-color: #25d366;
+}
+
+.impact-analysis {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+}
+
+.impact-meter {
+  width: 100%;
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.impact-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #81c784);
+  transition: width 0.5s ease-in-out;
+}
+
+.impact-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.impact-stat {
+  background: rgba(0, 58, 112, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.impact-stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--ucv-blue);
+}
+
+.impact-stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+</style>
+</head>
+<body>
+  <div id="welcome" class="welcome-screen">
+    <div class="logo-container">
+      <svg width="200" height="200" viewBox="0 0 400 400">
+        <path d="M200 20C101.634 20 20 101.634 20 200C20 298.366 101.634 380 200 380C298.366 380 380 298.366 380 200C380 101.634 298.366 20 200 20Z" fill="var(--ucv-blue)"/>
+        <path d="M200 60C123.726 60 60 123.726 60 200C60 276.274 123.726 340 200 340C276.274 340 340 276.274 340 200C340 123.726 276.274 60 200 60ZM200 300C145.817 300 100 254.183 100 200C100 145.817 145.817 100 200 100C254.183 100 300 145.817 300 200C300 254.183 254.183 300 200 300Z" fill="var(--ucv-red)"/>
+        <text x="200" y="200" text-anchor="middle" fill="white" font-size="40" font-weight="bold">UCV</text>
+      </svg>
+    </div>
+    <h2 style="color: var(--ucv-blue);">Bienvenido a la Calculadora de Huella de Nitrógeno</h2>
+    <div class="welcome-form">
+      <input type="text" id="userName" class="welcome-input" placeholder="Ingresa tu nombre" required>
+      <button onclick="startApp()">Comenzar</button>
+    </div>
+  </div>
+
+  <div class="container" id="mainContent" style="display: none;">
+    <div class="logo-container">
+      <svg width="200" height="200" viewBox="0 0 400 400">
+        <path d="M200 20C101.634 20 20 101.634 20 200C20 298.366 101.634 380 200 380C298.366 380 380 298.366 380 200C380 101.634 298.366 20 200 20Z" fill="var(--ucv-blue)"/>
+        <path d="M200 60C123.726 60 60 123.726 60 200C60 276.274 123.726 340 200 340C276.274 340 340 276.274 340 200C340 123.726 276.274 60 200 60ZM200 300C145.817 300 100 254.183 100 200C100 145.817 145.817 100 200 100C254.183 100 300 145.817 300 200C300 254.183 254.183 300 200 300Z" fill="var(--ucv-red)"/>
+        <text x="200" y="200" text-anchor="middle" fill="white" font-size="40" font-weight="bold">UCV</text>
+      </svg>
+    </div>
+
+    <h1 style="color: var(--ucv-blue); text-align: center;">Calculadora de Huella de Nitrógeno</h1>
+    
+    <div class="calculator">
+      <div class="input-group">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M5 17h14v2H5v-2zm7-12L5.33 15h13.34L12 5zm0 3.6l2.93 4.4H9.07L12 8.6z"/>
+            <path d="M3 19h18v2H3v-2zm7-12l-4 6h8l-4-6z"/>
+          </svg>
+        </div>
+        <div class="input-content">
+          <label>Consumo de carne (kg/mes):</label>
+          <input type="number" id="carne" min="0" step="0.1">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M7 3h10v2c0 1.1-.9 2-2 2h-6c-1.1 0-2-.9-2-2V3zm0 4h10v12c0 1.1-.9 2-2 2h-6c-1.1 0-2-.9-2-2V7z"/>
+            <path d="M9 13.5v-3c0-.28.22-.5.5-.5s.5.22.5.5v3c0 .28-.22.5-.5.5s-.5-.22-.5-.5z"/>
+          </svg>
+        </div>
+        <div class="input-content">
+          <label>Consumo de lácteos (L/mes):</label>
+          <input type="number" id="lacteos" min="0" step="0.1">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <ellipse cx="12" cy="12" rx="8" ry="10"/>
+            <ellipse cx="12" cy="12" rx="3" ry="4" fill="var(--ucv-blue)"/>
+          </svg>
+        </div>
+        <div class="input-content">
+          <label>Consumo de huevos (unidades/mes):</label>
+          <input type="number" id="huevos" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="3" fill="var(--ucv-blue)"/>
+            <path d="M12 6c-.94 0-1.87.19-2.73.56C7.84 7.15 6.5 8.5 6.5 10c0 1.38.78 2.6 2 3.19v3.31c0 .55.45 1 1 1h5c.55 0 1-.45 1-1v-3.31c1.22-.59 2-1.81 2-3.19 0-1.5-1.34-2.85-2.77-3.44A5.98 5.98 0 0012 6z"/>
+          </svg>
+        </div>
+        <div class="input-content">
+          <label>Consumo de legumbres (kg/mes):</label>
+          <input type="number" id="legumbres" min="0" step="0.1">
+        </div>
+      </div>
+
+      <button onclick="calcularHuella()">Calcular Huella de Nitrógeno</button>
+    </div>
+
+    <div id="resultado" class="result"></div>
+  </div>
+
+<script>
+let userName = '';
+
+function startApp() {
+  const nameInput = document.getElementById('userName');
+  userName = nameInput.value.trim();
+  
+  if (userName) {
+    document.getElementById('welcome').style.display = 'none';
+    const mainContent = document.getElementById('mainContent');
+    mainContent.style.display = 'block';
+    
+    // Add welcome message at the top of the calculator
+    const welcomeMsg = document.createElement('div');
+    welcomeMsg.className = 'welcome-message';
+    welcomeMsg.innerHTML = `¡Hola ${userName}! Bienvenido/a a la calculadora de huella de nitrógeno`;
+    mainContent.insertBefore(welcomeMsg, mainContent.firstChild);
+  } else {
+    alert('Por favor, ingresa tu nombre para continuar');
+  }
+}
+
+function calcularImpactoGlobal(huellaTotal) {
+  const promedioGlobal = 4.2; // kg N per person monthly average
+  const reduccion = promedioGlobal - huellaTotal;
+  const porcentajeReduccion = (reduccion / promedioGlobal) * 100;
+  
+  return {
+    reduccion: reduccion.toFixed(2),
+    porcentaje: Math.max(0, Math.min(100, porcentajeReduccion)).toFixed(1),
+    arbolesEquivalentes: Math.abs(reduccion * 2.5).toFixed(1),
+    aguaAhorrada: Math.abs(reduccion * 1000).toFixed(0),
+  };
+}
+
+function calcularHuella() {
+  const factores = {
+    carne: 0.15,    
+    lacteos: 0.05,  
+    huevos: 0.003,  
+    legumbres: 0.02 
+  };
+
+  const carne = parseFloat(document.getElementById('carne').value) || 0;
+  const lacteos = parseFloat(document.getElementById('lacteos').value) || 0;
+  const huevos = parseFloat(document.getElementById('huevos').value) || 0;
+  const legumbres = parseFloat(document.getElementById('legumbres').value) || 0;
+
+  const huellaCarne = carne * factores.carne;
+  const huellaLacteos = lacteos * factores.lacteos;
+  const huellaHuevos = huevos * factores.huevos;
+  const huellaLegumbres = legumbres * factores.legumbres;
+
+  const huellaTotal = huellaCarne + huellaLacteos + huellaHuevos + huellaLegumbres;
+
+  let mensajeFelicitacion = '';
+  if (huellaTotal <= 2) {
+    mensajeFelicitacion = `
+      <div style="background-color: #e8f5e9; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #4caf50;">
+        <h3 style="color: #2e7d32; margin-top: 0;">¡Felicitaciones ${userName}! 🌟</h3>
+        <p>Tu huella de nitrógeno es excelente. Estás contribuyendo significativamente a la protección del medio ambiente con tus hábitos alimenticios sostenibles.</p>
+      </div>
+    `;
+  }
+
+  const impacto = calcularImpactoGlobal(huellaTotal);
+  const esPositivo = huellaTotal < 4.2;
+
+  let mensajeReflexion = '';
+  if (!esPositivo) {
+    mensajeReflexion = `
+      <div style="background-color: #ffeaeb; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid var(--ucv-red);">
+        <h3 style="color: var(--ucv-red); margin-top: 0;">Reflexión para mejorar 🤔</h3>
+        <p>Tu huella está por encima del promedio global, pero no te preocupes, ¡juntos podemos mejorar! Aquí hay algunos consejos para reducir tu huella:</p>
+        <ul style="margin-top: 0.5rem;">
+          <li>Considera reducir gradualmente tu consumo de carne roja</li>
+          <li>Incorpora más proteínas vegetales en tu dieta</li>
+          <li>Opta por productos lácteos de origen sostenible</li>
+          <li>Planifica tus comidas para evitar el desperdicio de alimentos</li>
+          <li>Explora alternativas plant-based un par de días a la semana</li>
+        </ul>
+        <p style="margin-top: 0.5rem;">Pequeños cambios en nuestros hábitos pueden tener un gran impacto en el medio ambiente. ¡Tú puedes ser parte del cambio! 💪🌱</p>
+      </div>
+    `;
+  }
+
+  const resultadoDiv = document.getElementById('resultado');
+  resultadoDiv.style.display = 'block';
+  resultadoDiv.innerHTML = `
+    <h3>Resultado del Cálculo para ${userName}:</h3>
+    <p>Tu huella de nitrógeno mensual es: ${huellaTotal.toFixed(2)} kg N</p>
+    ${mensajeFelicitacion}
+    ${mensajeReflexion}
+    <p>Desglose:</p>
+    <ul>
+      <li>Carne: ${huellaCarne.toFixed(2)} kg N</li>
+      <li>Lácteos: ${huellaLacteos.toFixed(2)} kg N</li>
+      <li>Huevos: ${huellaHuevos.toFixed(2)} kg N</li>
+      <li>Legumbres: ${huellaLegumbres.toFixed(2)} kg N</li>
+    </ul>
+    <div class="impact-analysis">
+      <h3>Análisis de Impacto Ambiental en Tiempo Real</h3>
+      
+      <p>Tu huella comparada con el promedio global (4.2 kg N/mes):</p>
+      <div class="impact-meter">
+        <div class="impact-progress" style="width: ${impacto.porcentaje}%"></div>
+      </div>
+      
+      <p>${esPositivo ? 
+        `¡Excelente! Estás ${impacto.reduccion} kg N por debajo del promedio global.` :
+        `Tu huella está ${Math.abs(impacto.reduccion)} kg N por encima del promedio global. ¡Puedes mejorar!`
+      }</p>
+
+      <div class="impact-stats">
+        <div class="impact-stat">
+          <div class="impact-stat-value">${impacto.porcentaje}%</div>
+          <div class="impact-stat-label">Reducción vs Promedio</div>
+        </div>
+        <div class="impact-stat">
+          <div class="impact-stat-value">${impacto.arbolesEquivalentes}</div>
+          <div class="impact-stat-label">Árboles Equivalentes</div>
+        </div>
+        <div class="impact-stat">
+          <div class="impact-stat-value">${impacto.aguaAhorrada}</div>
+          <div class="impact-stat-label">Litros de Agua Ahorrados</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+        * Los cálculos se basan en promedios globales y estimaciones de impacto ambiental.
+      </p>
+    </div>
+    <div class="social-share">
+      <h3>¡Comparte tus resultados!</h3>
+      <p>Ayuda a crear conciencia compartiendo tus logros con otros</p>
+      <div class="share-buttons">
+        <a href="javascript:void(0)" onclick="compartirResultado('facebook')" class="share-button facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/>
+          </svg>
+          Facebook
+        </a>
+        <a href="javascript:void(0)" onclick="compartirResultado('twitter')" class="share-button twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"/>
+          </svg>
+          Twitter
+        </a>
+        <a href="javascript:void(0)" onclick="compartirResultado('whatsapp')" class="share-button whatsapp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.1 3.9C17.9 1.7 15 .5 12 .5 5.8.5.7 5.6.7 11.9c0 2 .5 3.9 1.5 5.6L.6 23.4l6-1.6c1.6.9 3.5 1.3 5.4 1.3 6.3 0 11.4-5.1 11.4-11.4-.1-2.8-1.2-5.7-3.3-7.8zM12 21.4c-1.7 0-3.3-.5-4.8-1.3l-.4-.2-3.5 1 1-3.4L4 17c-1-1.5-1.4-3.2-1.4-5.1 0-5.2 4.2-9.4 9.4-9.4 2.5 0 4.9 1 6.7 2.8 1.8 1.8 2.8 4.2 2.8 6.7-.1 5.2-4.3 9.4-9.5 9.4zm5.1-7.1c-.3-.1-1.7-.9-1.9-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1s-1.2-.5-2.3-1.4c-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.1.3-.3.4-.5.1-.2 0-.4 0-.5C10 9 9.3 7.6 9 7c-.1-.4-.4-.3-.5-.3h-.6s-.4.1-.7.3c-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/>
+          </svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function compartirResultado(platform) {
+  const huellaTotal = document.querySelector('#resultado p:nth-child(2)').textContent;
+  const mensaje = `¡Hola! Soy ${userName} y acabo de calcular mi huella de nitrógeno usando la calculadora de la UCV. ${huellaTotal} ¡Únete al cambio y calcula tu huella también! 🌱 #HuelladeNitrógeno #UCV #SostenibilidadAmbiental`;
+  
+  let url = '';
+  switch(platform) {
+    case 'facebook':
+      url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(mensaje)}`;
+      break;
+    case 'twitter':
+      url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(mensaje)}&url=${encodeURIComponent(window.location.href)}`;
+      break;
+    case 'whatsapp':
+      url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje + '\n' + window.location.href)}`;
+      break;
+  }
+  
+  window.open(url, '_blank');
+}
+</script>
+</body></html>
